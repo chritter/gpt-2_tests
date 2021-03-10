@@ -74,8 +74,8 @@ def train(dataloader, model, optimizer_, scheduler_, device_, scaler):
     # The documentation for this a bert model function is here: 
     # https://huggingface.co/transformers/v2.2.0/model_doc/bert.html#transformers.BertForSequenceClassification
 
-    with torch.cuda.amp.autocast():
-      outputs = model(**batch)
+    #with torch.cuda.amp.autocast():
+    outputs = model(**batch)
 
             # y_pred = model(X_batch).squeeze()
             # loss = self.loss_fn(y_pred, y_batch)
@@ -92,8 +92,8 @@ def train(dataloader, model, optimizer_, scheduler_, device_, scaler):
     total_loss += loss.item()
 
     # Perform a backward pass to calculate the gradients.
-    #loss.backward()
-    scaler.scale(loss).backward()
+    loss.backward()
+    #scaler.scale(loss).backward()
 
     # Clip the norm of the gradients to 1.0.
     # This is to help prevent the "exploding gradients" problem.
@@ -102,11 +102,11 @@ def train(dataloader, model, optimizer_, scheduler_, device_, scaler):
     # Update parameters and take a step using the computed gradient.
     # The optimizer dictates the "update rule"--how the parameters are
     # modified based on their gradients, the learning rate, etc.
-    # optimizer_.step() CR commented
+    optimizer_.step()
 
     # Update the learning rate.
-    scaler.step(optimizer_)
-    scaler.update()
+    #scaler.step(optimizer_)
+    #scaler.update()
 
 
     scheduler_.step()

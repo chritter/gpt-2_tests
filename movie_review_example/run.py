@@ -36,14 +36,14 @@ max_length = 1024 #60 # 512 is possible and better. Need to classify sentences i
 
 # Look for gpu to use. Will use `cpu` by default if no gpu found.
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-#device = 'cpu'
+device = 'cpu'
 
 # Name of transformers model - will use already pretrained model.
 # Path of transformer model - will load your own model from local disk.
 
 # see https://huggingface.co/gpt2
 # Model Types: 'gpt2-xl' #'gpt2' 
-model_name_or_path = 'gpt2-medium' # 'gpt2-medium'  #'gpt2-xl' #'gpt2-large' #'gpt2-xl' #'gpt2' 
+model_name_or_path = 'gpt2' #'gpt2-xl' # 'gpt2-medium'  #'gpt2-xl' #'gpt2-large' #'gpt2-xl' #'gpt2' 
 
 # Dictionary of labels and their id - this will be used to convert.
 # String labels to number ids.
@@ -182,26 +182,28 @@ for epoch in tqdm(range(epochs)):
   all_acc['train_acc'].append(train_acc)
   all_acc['val_acc'].append(val_acc)
 
+save_path = "/home/jovyan/data-vol-1/gpt2/fine_tuned_models/test2" #test_gp2_full"
+model.save_pretrained(save_path)
+import json
+json.dump(all_loss, open(save_path+"/losses.json", 'w'))
+json.dump(all_acc, open(save_path+"/accuracies.json", 'w'))
+
 
 # Plot loss curves.
-plot_dict(all_loss, use_xlabel='Epochs', use_ylabel='Value', use_linestyles=['-', '--'])
-
-# Plot accuracy curves.
-plot_dict(all_acc, use_xlabel='Epochs', use_ylabel='Value', use_linestyles=['-', '--'])
 
 
 
-# Get prediction form model on validation data. This is where you should use
-# your test data.
-true_labels, predictions_labels, avg_epoch_loss = validation(valid_dataloader, device)
+# # Get prediction form model on validation data. This is where you should use
+# # your test data.
+# true_labels, predictions_labels, avg_epoch_loss = validation(valid_dataloader, device)
 
-# Create the evaluation report.
-evaluation_report = classification_report(true_labels, predictions_labels, labels=list(labels_ids.values()), target_names=list(labels_ids.keys()))
-# Show the evaluation report.
-print(evaluation_report)
+# # Create the evaluation report.
+# evaluation_report = classification_report(true_labels, predictions_labels, labels=list(labels_ids.values()), target_names=list(labels_ids.keys()))
+# # Show the evaluation report.
+# print(evaluation_report)
 
-# Plot confusion matrix.
-plot_confusion_matrix(y_true=true_labels, y_pred=predictions_labels, 
-                      classes=list(labels_ids.keys()), normalize=True, 
-                      magnify=0.1,
-                      );
+# # Plot confusion matrix.
+# plot_confusion_matrix(y_true=true_labels, y_pred=predictions_labels, 
+#                       classes=list(labels_ids.keys()), normalize=True, 
+#                       magnify=0.1,
+#                       );
