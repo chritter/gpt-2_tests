@@ -43,7 +43,7 @@ device = 'cpu'
 
 # see https://huggingface.co/gpt2
 # Model Types: 'gpt2-xl' #'gpt2' 
-model_name_or_path = 'gpt2' #'gpt2-xl' # 'gpt2-medium'  #'gpt2-xl' #'gpt2-large' #'gpt2-xl' #'gpt2' 
+model_name_or_path = 'gpt2-xl' #'gpt2-xl' # 'gpt2-medium'  #'gpt2-xl' #'gpt2-large' #'gpt2-xl' #'gpt2' 
 
 # Dictionary of labels and their id - this will be used to convert.
 # String labels to number ids.
@@ -182,7 +182,7 @@ for epoch in tqdm(range(epochs)):
   all_acc['train_acc'].append(train_acc)
   all_acc['val_acc'].append(val_acc)
 
-save_path = "/home/jovyan/data-vol-1/gpt2/fine_tuned_models/test2" #test_gp2_full"
+save_path = "/home/jovyan/data-vol-1/gpt2/fine_tuned_models/test_gp2_full" #test_gp2_full"
 model.save_pretrained(save_path)
 import json
 json.dump(all_loss, open(save_path+"/losses.json", 'w'))
